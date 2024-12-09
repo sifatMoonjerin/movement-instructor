@@ -68,21 +68,21 @@ if st.session_state.step == 0:
 
 if st.session_state.step == 1:
     st.session_state.moves = st.selectbox("Choose a movement type:", list(movement_options.keys()))
-    
+    if st.session_state.moves in ["Leg Movements", "Ankle Movements"]:
+        st.session_state.type = "Execution"
+        st.session_state.duration = 60
+    else:
+        st.session_state.type = "Imagination"
+        st.session_state.duration = 30
+
 if st.session_state.step == 2:
-    st.session_state.type = st.selectbox("Choose type:", ["Execution", "Imagination"])
-
-if st.session_state.step == 3:
-    st.session_state.duration = st.selectbox("Choose duration(s):",[30, 60])
-
-if st.session_state.step == 4:
     instruction_placeholder = st.empty()
     custom_write(instruction_placeholder, "Get Ready...")
     time.sleep(3)
     handle_moves(instruction_placeholder)
     custom_write(instruction_placeholder, "Session Completed!")
     
-if st.session_state.step == 5:
+if st.session_state.step == 3:
     df = pd.DataFrame(st.session_state.records, columns=["User", "Move", "Type", "Timestamp"])
     
     file_name = f"{st.session_state.user_code}_{st.session_state.moves}_{st.session_state.type}.csv"
@@ -102,7 +102,7 @@ if st.session_state.step == 5:
         mime="text/csv",
     )
     
-if st.session_state.step < 5:
+if st.session_state.step < 3:
     st.markdown("""
         <style>
         .stButton>button {
